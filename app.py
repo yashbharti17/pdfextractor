@@ -1,8 +1,8 @@
 from flask import Flask, request, render_template, jsonify
 import pdfplumber
 import re
-import os
 import requests
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -26,9 +26,9 @@ def extract_phone_fax_email(text):
     )
 
 # Function to Extract Data from PDF
-def extract_pdf_data(pdf_path):
+def extract_pdf_data(pdf_file):
     extracted_data = []
-    with pdfplumber.open(pdf_path) as pdf:
+    with pdfplumber.open(pdf_file) as pdf:
         for page in pdf.pages:
             text = page.extract_text()
             if text:
@@ -65,20 +65,16 @@ def index():
         if file.filename == "":
             return "No selected file"
 
-        # Save the uploaded file temporarily
-        file_path = os.path.join("uploads", file.filename)
-        file.save(file_path)
+        # Read the uploaded file directly from memory
+        file_stream = BytesIO(file.read())
 
         # Extract data
-        extracted_data = extract_pdf_data(file_path)
+        extracted_data = extract_pdf_data(file_stream)
 
         # Send data to Google Sheets
         if extracted_data:
             response = requests.post(GOOGLE_SHEET_API_URL, json=extracted_data)
             print("Google Sheets Response:", response.json())
-
-        # Remove the file after processing
-        os.remove(file_path)
 
     return render_template("index.html", data=extracted_data)
 
