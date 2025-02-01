@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Data Extraction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload a PDF to Extract Data</h2>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload & Extract</button>
+    </form>
+
+    {% if data %}
+    <h2>Extracted Data</h2>
+    <table>
+        <tr>
+            <th>Company Name (Respondent)</th>
+            <th>Customer Reference Company Name</th>
+            <th>Contact Person and Title</th>
+            <th>Customer Reference Role</th>
+            <th>Contact Address</th>
+            <th>Telephone Number</th>
+            <th>Fax</th>
+            <th>E-mail</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Amount of Project</th>
+        </tr>
+        {% for entry in data %}
+        <tr>
+            <td>{{ entry["Company Name (Respondent)"] }}</td>
+            <td>{{ entry["Customer Reference Company Name"] }}</td>
+            <td>{{ entry["Customer Reference Contact Person and Title"] }}</td>
+            <td>{{ entry["Customer Reference Role"] }}</td>
+            <td>{{ entry["Customer Reference Contact Address"] }}</td>
+            <td>{{ entry["Telephone Number"] }}</td>
+            <td>{{ entry["Fax"] }}</td>
+            <td>{{ entry["E-mail"] }}</td>
+            <td>{{ entry["Start Date"] }}</td>
+            <td>{{ entry["End Date"] }}</td>
+            <td>{{ entry["Total Amount of Project"] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p class="success">Data successfully sent to Google Sheets!</p>
+    {% endif %}
+</body>
+</html>
