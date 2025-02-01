@@ -31,6 +31,9 @@
             font-weight: bold;
             margin-top: 20px;
         }
+        .view-sheet {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -72,8 +75,12 @@
         </tr>
         {% endfor %}
     </table>
-
-    <p class="success">Data successfully sent to Google Sheets!</p>
+    
+    <div class="view-sheet">
+        <a href="https://docs.google.com/spreadsheets/d/1XG-re306bH6APKM9tAE2EhbP5yiOGTVPJeXI5VcuoTQ/edit?gid=0#gid=0" target="_blank">
+            <button>View Google Sheet</button>
+        </a>
+    </div>
     {% endif %}
 </body>
 </html>
